@@ -294,8 +294,8 @@ entered or left those areas, also referred to as geofences.
 The Geolocation Working Group was chartered to define a~secure and privacy-sensitive interface
 for using client-side location information in location-aware Web applications
 and published an update to the Geolocation \textsc{api}~\cite{popescu2016geolocation}
-specification as a Recommendation based on Service Workers~\cite{russell2017serviceworkers}.
-However, the work on the Geofencing \textsc{api} specification did not complete.
+specification as a Recommendation without the geofencing feature
+that was worked on as a separate Geofencing \textsc{api} specification, but did not complete.
 While it would be possible to implement something similar using the Geolocation \textsc{api}
 (as long as the application is in the foreground),
 there were a~few differences that made the proposed \textsc{api} look like a~better choice:
@@ -385,9 +385,9 @@ apart from the privacy implications of potentially inadvertently continuing to s
 
 Work on the concept of Wake Locks is resumed in the \textsc{w3c}
 Wake Lock specification~\cite{bogdanovich2017wakelock}.
-With the at the time of writing implemented specification,
-Wake Locks of the type \texttt{"system"} (there is no type \texttt{"gps"})
-can be used with \texttt{watchPosition()}.
+With the at the time of writing implemented version,
+Wake Locks of the type \texttt{"system"}
+(there is no type \texttt{"gps"}) can be used with \texttt{watchPosition()}.
 \autoref{code:wakelock} shows the relevant code excerpts of a~Web application
 called ``Where Am~I'', depicted in \autoref{fig:wakelock}, that implements this.
 
@@ -457,17 +457,23 @@ improves security and privacy, and is extensible.
 The \textsc{api} aims to be
 polyfillable\footnote{\url{https://github.com/w3c/sensors/blob/master/polyfills/geolocation.js}}
 on top of the existing Geolocation \textsc{api}.
-As all recent \textsc{api}s, instead of callback functions, Geolocation Sensor uses promises.
+As all recent \textsc{api}s, instead of callback functions, Geolocation Sensor
+uses promises for one-shot or one-and-done
+operations.\footnote{\url{https://www.w3.org/2001/tag/doc/promises-guide\#one-and-done}}
 
 Unlike with the previous Geolocation \textsc{api}, the Geolocation Sensor \textsc{api}
-does not have dedicated methods for one-shot versus continuous location requests,
-but instead depends on sensor readings according to a~frequency (specified in Hertz) that is used
+does not have dedicated callbacks for
+one-shot versus continuous location
+requests,\footnote{\texttt{GeolocationSensor} does have a dedicate static operation
+\texttt{read()} for one-shots.}
+but instead fires an event according to a~frequency (specified in Hertz) that is used
 to calculate the requested sampling frequency for the associated platform sensor
-and to define the upper bound of the reporting frequency for the \texttt{GeolocationSensor} object.
+and to define the upper bound of the reporting frequency for the \texttt{GeolocationSensor}
+object.
 \autoref{code:geolocationsensor} shows the \textsc{api} in practice.
 
 \begin{lstlisting}[caption={Geolocation Sensor \textsc{api}},
-  label=code:geolocationsensor, language=JavaScript, float=h] 
+  label=code:geolocationsensor, language=JavaScript, float=t] 
 // Get a new geolocation reading every second
 const geo = new GeolocationSensor({frequency: 1});
 geo.start();
@@ -612,36 +618,37 @@ experiments\footnote{\url{https://medium.com/dev-channel/experimenting-with-the-
 with Wake Locks and how they can interact with Geolocation Sensor,
 with a~special focus on sensor readings in non-focused and non-visible states (\autoref{sec:focusandvisibility}).
 Further, after having explored use cases around background geolocation
-and geofencing~\cite{kostiainen2018geolocation}, we will resume our work
-on specifying a~Geofencing~\cite{kruisselbrink2017geofencing} \textsc{api}
-and therefore how (or if at all) \texttt{GeolocationSensor} can be integrated
-with Service Workers~\cite{russell2017serviceworkers},
-possibly via the extensibility mechanism defined in Service Workers
+and geofencing~\cite{kostiainen2018geolocation} in more detail,
+we will resume our work on Geofencing~\cite{kruisselbrink2017geofencing}
+and investigate integration of this feature with Geolocation Sensor~\cite{kostiainen2018geolocation},
+possibly via the extensibility mechanism defined in Service Workers~\cite{russell2017serviceworkers}
 that makes them extensible from other specifications through a~functional event
 by extending the \texttt{ExtendableEvent} interface.
 
 User privacy is central to all sensor readings, and particularly to geolocation.
 As outlined in \autoref{sec:googlegears}, from the start it was a~major concern
-and especially with new background geolocation and geofencing use cases continues to be.
+and especially with new background geolocation and geofencing use cases
+it remains an issue of high importance.
 In~\cite{russell2018permissions}, Russell and Nattestad have explored permission dialog
 abuse, annoyance, and fatigue of users; and according to their opinion (which we support),
 ``today's permissions model and \textsc{api} surface area should be heavily revised
 [\ldots] to enable more flexible permission policies'' in a~more uniform
 Permissions \textsc{api}~\cite{lamouri2017permissions}.
 Some ideas include time-limiting and one-off requests and permission grants, but also
-extending Web Application Manifest~\cite{caceres2018manifest} to include
-fields which allow sites to identify to the runtime a maximum set of permissions,
-with requests for permissions not included in this list to fail.
+extending Web Application Manifest~\cite{caceres2018manifest}
+to allow sites to identify to the runtime a maximum set of permissions,
+and turn down permission requests not explicitly included in the Web Application Manifest.
 
 Concluding, in this paper we have first provided an overview
 of the historical development of geolocation in the browser,
 and given an outlook on current and future efforts, challenges, and use cases in the field.
 The importance of user privacy is ever-increasing, and in our work on geolocation,
 background geolocation, and geofencing,
-we are well aware of that.
-While abusive behavior like exploiting sensors for fingerprinting remain massive threats,
-in our work, we strive to carefully balance both the great possibilities but also the risks,
-for a~more capable and open Web, today, and in the future.
+we keep privacy as a top priority.
+While many privacy concerns such as unsanctioned third-party access and fingerprinting
+can now be mitigated by technical measures, we continue to work with the privacy research community
+to ensure the Web remains a~both capable and safe platform today and in the future
+by carefully assessing every new proposed feature for possible privacy threats.
 
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{bibliography}
