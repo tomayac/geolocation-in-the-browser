@@ -212,6 +212,19 @@ which some of the authors have helped to define in collaboration with Microsoft,
 The goal for Gears was to advance browser capabilities and eventually make itself a~relict of time,
 which is what has happened.
 
+\subsection{Mozilla Geode}
+
+Mozilla Geode~\cite{beard2008geode} was an experimental add-on to explore geolocation in Firefox~3
+ahead of the implementation of geolocation in a future product release.
+Geode provided an early implementation of the \textsc{w3c} Geolocation
+specification~\cite{popescu2016geolocation} so that developers could begin experimenting
+with enabling location-aware experiences.
+It included a~single experimental geolocation service provider called Skyhook to map WiFi signals
+to locations, so that any computer with WiFi could get accurate positioning data.
+An interesting historical fact is that the ultimate plan for Firefox was that service providers
+and geolocation methods would be pluggable and user-selectable to provide users
+with as many choices and privacy options as possible.
+
 \subsection{\textsc{w3c} Geolocation \textsc{api}}
 
 The \textsc{w3c} Geolocation \textsc{api} specification~\cite{popescu2016geolocation}
@@ -221,11 +234,12 @@ The \textsc{api} itself is agnostic of the underlying location information sourc
 and no guarantee is given that it returns the device's actual location.
 The design enables both ``one-shot'' position requests as well as repeated position updates,
 and also includes the ability to explicitly query the cached positions.
-As outlined above, the work is based on prior art in the industry in the form of Google Gears,
-as well as the work of Turner, Sarver, and Raskin in the context of locationaware.org and
+As outlined above, the work is based on prior art in the industry in the form of Gears and Geode,
+as well as the work of Turner, Popescu, Sarver, and Raskin in the context of locationaware.org and
 geolocation in the Firefox browser~\cite{raskin2010geolocation}.
 
-Similar to its predecessor Google Gears, the specification defines three methods:
+Similar to its predecessors Google Gears and Mozilla Geode,
+the specification defines three methods:
 The \texttt{getCurrentPosition()} method asynchronously attempts
 to obtain the current location of the device.
 If the attempt is successful, the \texttt{successCallback} must be invoked
