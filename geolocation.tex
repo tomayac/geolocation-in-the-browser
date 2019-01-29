@@ -578,7 +578,7 @@ Similar to \autoref{sec:wakelocks}, these constraints limit use cases like fitne
 or maps navigation that require sensor readings in potentially non-active, non-visible documents,
 for example while the user chooses a music track to accompany their run or drive.
 
-\subsection{Permissions}
+\subsection{Permissions and Privacy Policy}
 
 Access to sensor readings are controlled by the \textsc{w3c} Permissions
 \textsc{api}~\cite{lamouri2017permissions}.
@@ -611,8 +611,19 @@ The current permission prompt has the options to allow or to block
 the location access request (or for what it is worth, to ignore by closing the dialog).
 Interestingly, Raskin envisioned~\cite{raskin2010geolocation} a~far more detailed permissions
 dialog, depicted in \autoref{fig:promptraskin}, which had granular levels of permitted access,
-for example, to limit the granularity to city or state level,
-however, this was never implemented.
+for example, to limit the granularity to city or state level.
+However, this was never implemented, as despite being fully investigated, it was found nearly impossible
+to implement ``fuzzing'' location
+data.\footnote{\url{https://tools.ietf.org/id/draft-thomson-geopriv-location-obscuring-03.html}}
+
+Additionally, a~notable privacy discussion was happening between the \textsc{ietf} \textsc{geopriv}
+and the \textsc{w3c} working groups around the question of whether or not
+a~privacy policy should be included in the upcoming Geolocation \textsc{api} itself,
+or rather be addressed as a~set of recommendations and requirements in the specification.
+The \textsc{w3c} working group
+concluded\footnote{\url{https://www.ietf.org/lib/dt/documents/LIAISON/file727.txt}}
+that privacy protection was better handled
+as part of a~more generic privacy and security framework for device access.
 
 \begin{figure}[h]
   \includegraphics[width=\columnwidth]{mockup-prompt.png}
