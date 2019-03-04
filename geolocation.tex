@@ -1,5 +1,8 @@
 \documentclass[sigconf,hyphens]{acmart}
 
+\usepackage{booktabs} % For formal tables
+\settopmatter{printacmref=true}
+\usepackage{balance}
 \usepackage[utf8]{inputenc}
 \def\sectionautorefname{Section}
 \def\subsectionautorefname{Subsection}
@@ -59,13 +62,12 @@
 \copyrightyear{2019}
 \acmYear{2019} 
 \setcopyright{iw3c2w3g}
-\acmConference[WWW '19 Companion]{The 2019 Web Conference Companion}{May 13--17, 2019}{
-   San Francisco, United States of America}
-\acmBooktitle{WWW '19 Companion: The 2019 Web Conference Companion, May 13--17, San Francisco,
-   United States of America}
+\acmConference[WWW '19 Companion]{Companion Proceedings of the 2019 World Wide Web Conference}{May 13--17, 2019}{San Francisco, CA, USA}
+\acmBooktitle{Companion Proceedings of the 2019 World Wide Web Conference (WWW '19 Companion), May 13--17, 2019, San Francisco, CA, USA}
 \acmPrice{}
-\acmDOI{}
-\acmISBN{}
+\acmDOI{10.1145/3308560.3316538}
+\acmISBN{978-1-4503-6675-5/19/05}
+
 \fancyhead{}
 \hypersetup{draft} 
 
@@ -132,6 +134,26 @@ and then gives an outlook on current and future efforts, challenges, and use cas
 from both a~technology as well as from a~privacy angle.
 \end{abstract}
 
+\begin{CCSXML}
+<ccs2012>
+<concept>
+<concept_id>10002951.10003260.10003282</concept_id>
+<concept_desc>Information systems~Web applications</concept_desc>
+<concept_significance>500</concept_significance>
+</concept>
+<concept>
+<concept_id>10002978.10003006.10003011</concept_id>
+<concept_desc>Security and privacy~Browser security</concept_desc>
+<concept_significance>500</concept_significance>
+</concept>
+</ccs2012>
+\end{CCSXML}
+
+\ccsdesc[500]{Information systems~Web applications}
+\ccsdesc[500]{Security and privacy~Browser security}
+
+\keywords{Geolocation; Geofencing; Geotracking; Permissions; Privacy}
+
 \maketitle
 
 \section{History of Browser Geolocation}
@@ -146,13 +168,16 @@ through Google's \textsc{ajax} \textsc{api} Loader library~\cite{block2008gears}
 which provided an approximate, region-level estimate of a~user's location
 through its \texttt{google.loader.ClientLocation} property.
 This \textsc{api} did not require users to install any client-side software.
+Implicit geolocation access is \textit{not} subject of the paper, however,
+we list it for the sake of completeness and because it still plays an important role today,
+for example, for \textsc{ip}-based regional content blocking.
 
 \subsection{Google Gears Geolocation \textsc{api}}
 \label{sec:googlegears}
 
 More accurate location data is available through Wi-Fi access point or cell tower data,
 as well as through Global Positioning Service (\textsc{gps}) data.
-This data is accessible to native applications, however, initially, not to the Web.
+This data is accessible to native applications, however, initially, not via Web \textsc{api}s.
 The Google Gears browser plugin~\cite{gears2008geolocation} for the first time exposed
 exact device-based geolocation data to the browser. 
 Its Geolocation \textsc{api} had two JavaScript methods:
@@ -208,7 +233,7 @@ so that the user cannot forget it is being used.''
 In the end, they decided on approach~(1), which is still how location access is granted today,
 despite different underlying mechanics.
 
-The similarity of the code in \autoref{code:googlegears} with current code is no surprise.
+The similarity of the code in \autoref{code:googlegears} with code one would write today is no surprise.
 Gears implemented the at the time current editor's draft of the \textsc{w3c} Geolocation
 specification, which some of the authors have helped to define in collaboration with Microsoft,
 Mozilla, and others. The goal for Gears was to advance browser capabilities and eventually make
@@ -225,7 +250,7 @@ with enabling location-aware experiences.
 It included a~single experimental proprietary geolocation service provider called Skyhook to map
 Wi-Fi signals to locations, so that any computer with Wi-Fi could get accurate positioning data.
 An interesting historical fact is that the ultimate plan for Firefox was that service providers
-and geolocation methods would be pluggable to provide users
+and geolocation methods would be pluggable~\cite{beard2008geode} to provide users
 with as many choices and privacy options as possible,
 which has not happened.
 
@@ -299,7 +324,7 @@ function clearPositionWatch() {
 
 \begin{figure*}[h]
   \includegraphics[width=\linewidth,trim=2.5cm 17.5cm 2.5cm 0cm]{caniuse.pdf}
-  \caption{Browser support data for the Geolocation \textsc{api},
+  \caption{Browser support data for the Geolocation \textsc{api} (green means supported, red means not supported),
     data via \url{https://caniuse.com/\#feat=geolocation}}
   \label{fig:caniuse}
 \end{figure*}
@@ -333,7 +358,7 @@ even after the user has closed the webapp.''
 \end{quote}
 
 \begin{lstlisting}[caption={Geofencing \textsc{api} (conceived example)},
-  label=code:geofence, language=JavaScript, float=h] 
+  label=code:geofence, language=JavaScript, float=b] 
 // On main page
 navigator.serviceWorker
   .register('serviceworker.js')
@@ -418,7 +443,7 @@ The accompanying app ``There Am~I''\footnote{\url{https://whereami.glitch.me/} a
 \url{https://thereami.glitch.me/}} can be used to visualize users.
 
 \begin{lstlisting}[caption={Using the Wake Lock \textsc{api} for background geolocation tracking},
-  label=code:wakelock, language=JavaScript, float=h] 
+  label=code:wakelock, language=JavaScript, float=t] 
 try {
   wakeLockObj = await navigator.getWakeLock('system');
   wakeLockObj.addEventListener('activechange', () => {
@@ -452,7 +477,7 @@ trackButton.addEventListener('click', () => {
 \end{lstlisting}
 
 \begin{figure}[h]
-  \includegraphics[width=0.55\columnwidth]{whereami.png}
+  \includegraphics[width=0.45\columnwidth]{whereami.png}
   \caption{Web app ``Where Am~I''
     with Wake Lock for background location tracking (\url{https://whereami.glitch.me/})}
   \label{fig:wakelock}  
@@ -516,6 +541,9 @@ GeolocationSensor.read()
 
 \section{Geolocation Privacy}
 
+Security and privacy issues for location-based services and geolocation-capable applications
+often revolve around designing a user interface such that users are informed
+about what an application is doing and have the ability to accept or decline~\cite{doty2010gpa}.
 Use cases like background geolocation or geofencing
 demand for a~thorough re-evaluation of privacy-related questions.
 Similarly, some of the requirements that today we take for granted
@@ -711,9 +739,8 @@ by carefully assessing every new proposed feature for possible privacy threats.
 We are thankful to \textit{Doug Turner} for his invaluable help
 with getting the historical facts right and to \textit{Alex Russell} for reviewing the paper.
 
-\newpage
-
 \bibliographystyle{ACM-Reference-Format}
+\balance 
 \bibliography{bibliography}
 
 \end{document}
