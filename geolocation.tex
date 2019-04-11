@@ -57,7 +57,7 @@
 \usepackage{color}
 \newcommand{\todo}[1]{\noindent\textcolor{red}{{\bf \{TODO}: #1{\bf \}}}}
 
-\settopmatter{printacmref=false}
+\settopmatter{printacmref=true}
 
 \copyrightyear{2019}
 \acmYear{2019} 
@@ -155,6 +155,8 @@ from both a~technology as well as from a~privacy angle.
 \keywords{Geolocation; Geofencing; Geotracking; Permissions; Privacy}
 
 \maketitle
+
+\break
 
 \section{History of Browser Geolocation}
 
@@ -660,8 +662,8 @@ for example, to limit the granularity to city or state level.
 However, this was never implemented, as despite being fully investigated, it was found to be nearly
 impossible to implement ``fuzzing'' of location data~\cite{thomson2011obscuring}.
 
-\begin{figure}[h]
-  \includegraphics[width=0.85\columnwidth]{mockup-prompt.png}
+\begin{figure}[t]
+  \includegraphics[width=0.55\columnwidth]{mockup-prompt.png}
   \caption{Aza Raskin's security prompt mock-up~\cite{raskin2010geolocation}}
   \label{fig:promptraskin}
 \end{figure}
